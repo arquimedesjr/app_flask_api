@@ -8,44 +8,57 @@ from services.alunos_service import \
 
 alunos_app = Blueprint('alunos_app', __name__, template_folder='templates')
 
+alunos_db = service_listar()
 
-@alunos_app.route('/alunos')
-def listar_alunos():
-    lista = service_listar()
-    return jsonify(lista)
-
+# ROTAS PARA ALUNOS
+@alunos_app.route("/alunos", methods = ["GET"])
+def listar():
+    return jsonify(alunos_db)
 
 @alunos_app.route('/alunos', methods=['POST'])
-def cadastrar_aluno():
-    novo_aluno = request.get_json()
-    aluno = service_criar(novo_aluno)
-    if aluno is None:
-        return jsonify({'erro': 'aluno já existe'}), 400
-    return jsonify(aluno)
+def novo_aluno():
+    novo_aluno = request.json
+    if 'nome' not in novo_aluno:
+        return jsonify({'erro': 'aluno sem nome'}), 404
+    for aluno in alunos_db:
+        if aluno['id'] == novo_aluno['id']:
+            return jsonify({'erro': 'id já utilizada'}), 404
+        else:
+            pass
+    alunos_db.append(novo_aluno)
+    return jsonify(alunos_db)
 
+@alunos_app.route('/alunos/<int:id_aluno>', methods=['GET'])
+def localiza_aluno(id_aluno):
+    for aluno in alunos_db:
+        if aluno['id'] == id_aluno:
+            return jsonify(aluno)
+    return jsonify({'erro': 'aluno não encontrado'}), 404
 
-@alunos_app.route('/alunos/<int:id>', methods=['PUT'])
-def alterar_aluno(id):
-    aluno_data = request.get_json()
-    if ('nome' not in aluno_data):
-        return jsonify({'erro': 'aluno sem nome'}), 400
-    atualizado = service_atualiza(id, aluno_data['nome'])
-    if atualizado != None:
-        return jsonify(atualizado)
-    return jsonify({'erro': 'aluno nao encontrado'}), 400
+@alunos_app.route('/alunos/<int:id_aluno>', methods=['PUT'])
+def edita_aluno(id_aluno):
+    dados = request.json
+    if 'nome' not in dados:
+        return jsonify({'erro': 'aluno sem nome'}), 404
+    for aluno in alunos_db:
+        if aluno['id'] == id_aluno:
+            aluno['nome'] = dados['nome']
+            return ""
+    return jsonify({'erro': 'aluno não encontrado'}), 404
 
+@alunos_app.route('/alunos/<int:id_aluno>', methods=['DELETE'])
+def deleta_aluno(id_aluno):
+    cont = 0
+    for aluno in alunos_db:
+        if aluno['id'] == id_aluno:
+            del(alunos_db[cont])
+            return alunos_db
+        else:
+            cont += 1
+    return jsonify({'erro': 'aluno não encontrado'}), 404
 
-@alunos_app.route('/alunos/<int:id>', methods=['GET'])
-def localizar_aluno(id):
-    aluno = service_localiza(id)
-    if aluno != None:
-        return jsonify(aluno)
-    return jsonify({'erro': 'aluno nao encontrado'}), 400
-
-
-@alunos_app.route('/alunos/<int:id>', methods=['DELETE'])
-def remover_aluno(id):
-    removido = service_remover(id)
-    if removido == 1:
-        return jsonify(removido), 202
-    return jsonify({'erro': 'aluno nao encontrado'}), 400
+@alunos_app.route('/alunos/reseta', methods=['POST'])
+def reseta_alunos():
+    while len(alunos_db) != 0:
+        del(alunos_db[0])
+    return jsonify(alunos_db)
