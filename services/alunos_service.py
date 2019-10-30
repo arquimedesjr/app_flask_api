@@ -3,7 +3,8 @@ from infra.alunos_dao import \
     consultar as dao_consultar, \
     cadastrar as dao_cadastrar, \
     alterar as dao_alterar, \
-    remover as dao_remover
+    remover as dao_remover, \
+    reseta as dao_reseta
 
 from model.aluno import Aluno
 
@@ -39,3 +40,6 @@ def atualizar(id, nome):
     aluno = Aluno.criar({"id": id, "nome":nome})
     dao_alterar(aluno)
     return localizar(id)
+
+def reseta():
+    return dao_reseta()

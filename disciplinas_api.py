@@ -4,7 +4,8 @@ from services.disciplinas_service import \
     localizar as service_localiza, \
     criar as service_criar, \
     remover as service_remover, \
-    atualizar as service_atualiza
+    atualizar as service_atualiza, \
+    reseta as service_reseta
 
 disciplinas_app = Blueprint('disciplinas_app', __name__, template_folder='templates')
 
@@ -49,5 +50,10 @@ def localizar_disciplina(id):
 def remover_disciplina(id):
     removido = service_remover(id)
     if removido == 1:
-        return jsonify(removido), 202
+        return jsonify({'sucesso': 'disciplinas removido com sucesso'}), 202
     return jsonify({'erro': 'disciplina nao encontrado'}), 400
+
+@disciplinas_app.route('/disciplinas/reseta', methods=['POST'])
+def reseta_disciplina():
+    service_reseta()
+    return jsonify({'sucesso': 'disciplinas resetados'}), 202

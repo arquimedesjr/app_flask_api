@@ -3,7 +3,8 @@ from infra.professores_dao import \
     consultar as dao_consultar, \
     cadastrar as dao_cadastrar, \
     alterar as dao_alterar, \
-    remover as dao_remover
+    remover as dao_remover, \
+    reseta as dao_reseta
 
 from model.professor import Professor
 
@@ -38,3 +39,6 @@ def atualizar(id, nome):
     professor = Professor.criar({"id": id, "nome":nome})
     dao_alterar(professor)
     return localizar(id)
+
+def reseta():
+    return dao_reseta()

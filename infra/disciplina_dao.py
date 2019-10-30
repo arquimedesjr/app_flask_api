@@ -58,3 +58,9 @@ def remover(disciplina):
         sql = f"DELETE FROM {model_name} WHERE id = ?"
         cursor.execute(sql, f"{disciplina.id}")
         connection.commit()
+
+def reseta():
+    with closing(con()) as connection, closing(connection.cursor()) as cursor:
+        sql = f"DELETE FROM {model_name}"
+        cursor.execute(sql)
+        connection.commit()

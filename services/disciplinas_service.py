@@ -3,7 +3,8 @@ from infra.disciplina_dao import \
     consultar as dao_consultar, \
     cadastrar as dao_cadastrar, \
     alterar as dao_alterar, \
-    remover as dao_remover
+    remover as dao_remover, \
+    reseta as dao_reseta
 
 
 from model.disciplina import Disciplina
@@ -44,3 +45,6 @@ def atualizar(id, nome, status, plano_ensino, carga_horaria):
                                    "carga_horaria": carga_horaria})
     dao_alterar(disciplina)
     return localizar(id)
+
+def reseta():
+    return dao_reseta()

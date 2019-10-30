@@ -4,7 +4,8 @@ from services.professores_service import \
     localizar as service_localiza, \
     criar as service_criar, \
     remover as service_remover, \
-    atualizar as service_atualiza
+    atualizar as service_atualiza, \
+    reseta as service_reseta
 
 professores_app = Blueprint('professores_app', __name__, template_folder='templates')
 
@@ -36,7 +37,7 @@ def novo():
 def remover(id):
     removido = service_remover(id)
     if removido == 1:
-        return jsonify(removido)
+        return jsonify({'sucesso': 'professores removido com sucesso'}), 202
     return jsonify({'erro':'professor nao encontrado'}), 400
 
 @professores_app.route('/professores/<int:id>', methods=['PUT'])
@@ -48,3 +49,8 @@ def atualiza(id):
     if atualizado != None:
         return jsonify(atualizado)
     return jsonify({'erro':'professor nao encontrado'}), 400
+
+@professores_app.route('/disciplinas/reseta', methods=['POST'])
+def reseta_professores():
+    service_reseta()
+    return jsonify({'sucesso': 'professores resetados'}), 202
