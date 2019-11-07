@@ -50,7 +50,7 @@ def atualiza(id):
         return jsonify(atualizado)
     return jsonify({'erro':'professor nao encontrado'}), 400
 
-@professores_app.route('/disciplinas/reseta', methods=['POST'])
+@professores_app.route('/professores/reseta', methods=['POST'])
 def reseta_professores():
     service_reseta()
     return jsonify({'sucesso': 'professores resetados'}), 202

@@ -9,7 +9,6 @@ from services.disciplinas_service import \
 
 disciplinas_app = Blueprint('disciplinas_app', __name__, template_folder='templates')
 
-
 @disciplinas_app.route("/disciplinas", methods=["GET"])
 def listar_disciplina():
     lista = service_listar()
@@ -21,19 +20,22 @@ def cadastrar_aluno():
     nova_disciplina = request.get_json()
     disciplina = service_criar(nova_disciplina)
     if disciplina is None:
-        return jsonify({'erro': 'Disciplina já existe'}), 400
+        return jsonify({'erro': 'Disciplina jรก existe'}), 400
     return jsonify(disciplina)
 
 
 @disciplinas_app.route('/disciplinas/<int:id>', methods=['PUT'])
 def alterar_disciplina(id):
     disciplina_data = request.get_json()
-    if 'disciplinas' not in disciplina_data:
-        return jsonify({'erro': 'aluno sem nome'}), 400
+    if 'nome' not in disciplina_data:
+        return jsonify({'erro': 'professor sem nome'}), 400
+
     atualizado = service_atualiza(id, disciplina_data['nome'], disciplina_data['status'],
                                   disciplina_data['plano_ensino'],
-                                  disciplina_data['carga_horaria'])
-    if atualizado != None:
+                                  disciplina_data['carga_horaria'],
+                                  disciplina_data['id_professor'])
+
+    if atualizado is not None:
         return jsonify(atualizado)
     return jsonify({'erro': 'disciplina nao encontrado'}), 400
 
@@ -41,7 +43,7 @@ def alterar_disciplina(id):
 @disciplinas_app.route('/disciplinas/<int:id>', methods=['GET'])
 def localizar_disciplina(id):
     disciplina = service_localiza(id)
-    if disciplina != None:
+    if disciplina is not None:
         return jsonify(disciplina)
     return jsonify({'erro': 'disciplina nao encontrado'}), 400
 

@@ -16,12 +16,7 @@ def init():
     connection = sqlite3.connect(db_name)
     cursor = connection.cursor()
     createTable(cursor, sql_create_table)
-    try:
-        popularDb(cursor, 1, "Tiago Alexandre")
-        popularDb(cursor, 2, "Lucas Mendes")
-        popularDb(cursor, 3, "Victor Williams")
-    except:
-        pass
+    
     cursor.close()
     connection.commit()
     connection.close()

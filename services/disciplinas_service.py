@@ -40,9 +40,9 @@ def remover(id):
     return 1
 
 
-def atualizar(id, nome, status, plano_ensino, carga_horaria):
+def atualizar(id, nome, status, plano_ensino, carga_horaria, id_professor):
     disciplina = Disciplina.criar({"id": id, "nome": nome, "status": status, "plano_ensino": plano_ensino,
-                                   "carga_horaria": carga_horaria})
+                                   "carga_horaria": carga_horaria, "id_professor": id_professor})
     dao_alterar(disciplina)
     return localizar(id)
 

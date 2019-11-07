@@ -1,10 +1,12 @@
 class Disciplina():
-    def __init__(self, id, nome, status, plano_ensino, carga_horaria):
+    def __init__(self, id, nome, status, plano_ensino, carga_horaria, id_professor):
         self.id = id
         self.nome = nome
         self.status = status
         self.plano_ensino = plano_ensino
         self.carga_hotaria = carga_horaria
+        self.id_professor = id_professor
+
 
     def atualizar(self, dados):
         try:
@@ -13,8 +15,9 @@ class Disciplina():
             status = dados["status"]
             plano_ensino = dados["plano_ensino"]
             carga_horaria = dados["carga_horaria"]
+            id_professor = dados["id_professor"]
 
-            self.id, self.nome, self.status, self.plano_ensino, self.carga_hotaria = id, nome, status, plano_ensino, carga_horaria
+            self.id, self.nome, self.status, self.plano_ensino, self.carga_hotaria, self.id_professor = id, nome, status, plano_ensino, carga_horaria, id_professor
             return self
         except Exception as e:
             print("Problema ao criar novo aluno!")
@@ -27,6 +30,7 @@ class Disciplina():
         d['status'] = self.status
         d['plano_ensino'] = self.plano_ensino
         d['carga_horaria'] = self.carga_hotaria
+        d['id_professor'] = self.id_professor
         return d
 
     @staticmethod
@@ -37,7 +41,8 @@ class Disciplina():
             status = dados["status"]
             plano_ensino = dados["plano_ensino"]
             carga_horaria = dados["carga_horaria"]
-            return Disciplina(id=id, nome=nome, status=status, plano_ensino=plano_ensino, carga_horaria=carga_horaria)
+            id_professor = dados['id_professor']
+            return Disciplina(id=id, nome=nome, status=status, plano_ensino=plano_ensino, carga_horaria=carga_horaria, id_professor=id_professor)
         except Exception as e:
             print("Problema ao criar novo aluno!")
             print(e)
